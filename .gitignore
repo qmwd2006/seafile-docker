@@ -8,3 +8,5 @@ bootstrap/*
 shared/*
 image/seafile/scripts
 image/pro-seafile/scripts
+
+image/seafile/seafile-server*.tar.gz

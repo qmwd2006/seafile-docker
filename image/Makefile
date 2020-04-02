@@ -1,4 +1,4 @@
-server_version=7.0.11
+server_version=7.0.5
 
 base_image=seafileltd/base-mc:18.04
 base_image_squashed=seafileltd/base-mc:18.04-squashed
@@ -17,17 +17,17 @@ all:
 	@echo
 
 base:
-	docker pull phusion/baseimage:0.11
-	docker-squash --tag phusion/baseimage:latest phusion/baseimage:0.11
+	docker pull phusion/baseimage:master-arm64 
+	docker-squash --tmp-dir ~/tmp --tag phusion/baseimage:latest phusion/baseimage:master-arm64
 	docker tag phusion/baseimage:latest phusion/baseimage:0.11
 	cd base && docker build -t $(base_image) .
-	docker-squash --tag $(base_image_squashed) $(base_image)
+	docker-squash --tmp-dir ~/tmp --tag $(base_image_squashed) $(base_image)
 	docker tag $(base_image_squashed) $(base_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
 
 server:
-	cd seafile && cp -rf ../../scripts ./ && docker build -t $(server_image) .
-	docker-squash --tag $(server_image_squashed) $(server_image) --from-layer=$(base_image)
+	cd seafile && cp -rf ../../scripts ./ && cp -rf ../../../seafile-armbian/seafile-server-pkgs/seafile-server_${server_version}_aarch64.tar.gz ./ && docker build -t $(server_image) .
+	docker-squash --tmp-dir ~/tmp --tag $(server_image_squashed) $(server_image) --from-layer=$(base_image)
 	docker tag $(server_image_squashed) $(server_image)
 	docker tag $(server_image) $(latest_server_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
