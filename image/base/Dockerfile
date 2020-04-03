@@ -10,7 +10,7 @@ CMD ["/sbin/my_init", "--", "bash", "-l"]
 RUN apt-get update -qq && apt-get -qq -y install nginx
 
 # Utility tools
-RUN apt-get install -qq -y vim htop net-tools psmisc git wget curl
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -qq -y vim htop net-tools psmisc git wget curl tzdata
 
 # Guidline for installing python libs: if a lib has C-compoment (e.g.
 # python-imaging depends on libjpeg/libpng), we install it use apt-get.
