@@ -10,3 +10,4 @@ termcolor==1.1.0
 prettytable==0.7.2
 colorlog==2.7.0
 Jinja2==2.8
+six==1.14.0

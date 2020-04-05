@@ -19,7 +19,7 @@ all:
 base:
 	docker pull phusion/baseimage:master-arm64 
 	docker-squash --tmp-dir ~/tmp --tag phusion/baseimage:latest phusion/baseimage:master-arm64
-	docker tag phusion/baseimage:latest phusion/baseimage:0.11
+	docker tag phusion/baseimage:latest phusion/baseimage:master-arm64
 	cd base && docker build -t $(base_image) .
 	docker-squash --tmp-dir ~/tmp --tag $(base_image_squashed) $(base_image)
 	docker tag $(base_image_squashed) $(base_image)
@@ -27,10 +27,7 @@ base:
 
 server:
 	cd seafile && cp -rf ../../scripts ./ && cp -rf ../../../seafile-armbian/seafile-server-pkgs/seafile-server_${server_version}_aarch64.tar.gz ./ && docker build -t $(server_image) .
-	docker-squash --tmp-dir ~/tmp --tag $(server_image_squashed) $(server_image) --from-layer=$(base_image)
-	docker tag $(server_image_squashed) $(server_image)
 	docker tag $(server_image) $(latest_server_image)
-	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
 
 pro-base:
 	cd pro_base && docker build -t $(pro_base_image) .
